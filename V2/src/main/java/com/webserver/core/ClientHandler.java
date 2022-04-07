@@ -6,6 +6,10 @@ import java.net.Socket;
 
 /**
  * 该线程任务负责与指定客户完成HTTP交互
+ * 1:解析请求
+ * 2:处理请求
+ * 3:发送响应
+ *
  */
 public class ClientHandler implements Runnable {
     private Socket socket;
