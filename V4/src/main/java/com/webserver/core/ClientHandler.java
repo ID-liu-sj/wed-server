@@ -21,33 +21,48 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             //读取客户端发过来的消息
-            InputStream in = socket.getInputStream();
-
-            char pre = 'a', cur = 'a';//pre上次读取的字符,cur本次读取的字符
-            StringBuilder builder = new StringBuilder();
-            int d;
-            while ((d = in.read()) != -1) {
-                cur = (char) d;//本次读取到的字符
-                if (pre==13&&cur==10){//判断是否连续读取到了回车和换行符
-                    break;
-                }
-                /*if (cur==' '){
-                    break;
-                }*/
-                builder.append(cur);
-                pre = cur;//在进行下次读取字符前将本次读取的字符记作上次读取的字符
-            }
-            String line = builder.toString().trim();
-            String[]data =line.split("\\s");
-
-            System.out.println("merhod:"+data[0]);
-            System.out.println("uri:"+data[1]);//这里可能会出现数组下标越界异常!原因:浏览器空请求，后期会解决
-            System.out.println("protocol:"+data[2]);
-
+            //1 解析请求
+            //1,1 解析请求行
+            String line = readLine();
             System.out.println(line);
+            //请求行相关信息
+            String[] data = line.split("\\s");//正则表达式
+            System.out.println("merhod:" + data[0]);
+            System.out.println("uri:" + data[1]);//这里可能会出现数组下标越界异常!原因:浏览器空请求，后期会解决
+            System.out.println("protocol:" + data[2]);
+
+            while (!(line = readLine()).isEmpty()){
+                System.out.println("消息头:" + line);
+                data = line.split(": ");
+                System.out.println("标题:"+data[0]);
+                System.out.println("内容:"+data[1]);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 通过socket获取的输入流读取客户发送过来的一行字符串
+     *
+     * @return
+     */
+    private String readLine() throws IOException {
+        InputStream in = socket.getInputStream();
+
+        char pre = 'a', cur = 'a';//pre上次读取的字符,cur本次读取的字符
+        StringBuilder builder = new StringBuilder();
+        int d;
+        while ((d = in.read()) != -1) {
+            cur = (char) d;//本次读取到的字符
+            if (pre == 13 && cur == 10) {//判断是否连续读取到了回车和换行符
+                break;
+            }
+            builder.append(cur);
+            pre = cur;//在进行下次读取字符前将本次读取的字符记作上次读取的字符
+        }
+        return builder.toString().trim();
+
     }
 }
