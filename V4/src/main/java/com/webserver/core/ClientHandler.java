@@ -3,6 +3,8 @@ package com.webserver.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 该线程任务负责与指定客户完成HTTP交互
@@ -31,12 +33,20 @@ public class ClientHandler implements Runnable {
             System.out.println("uri:" + data[1]);//这里可能会出现数组下标越界异常!原因:浏览器空请求，后期会解决
             System.out.println("protocol:" + data[2]);
 
+            Map<String,String>headers =new HashMap<>();
             while (!(line = readLine()).isEmpty()){
                 System.out.println("消息头:" + line);
-                data = line.split(": ");
-                System.out.println("标题:"+data[0]);
-                System.out.println("内容:"+data[1]);
+                data = line.split(":\\s");
+                headers.put(data[0],data[1] );
+
+//                System.out.println("标题:"+data[0]);
+//                System.out.println("内容:"+data[1]);
             }
+            System.out.println("headers:"+headers);
+
+
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
