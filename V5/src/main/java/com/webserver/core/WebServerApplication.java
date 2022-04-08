@@ -37,7 +37,6 @@ public class WebServerApplication {
             ClientHandler handler = new ClientHandler(socket);
             Thread t = new Thread(handler);
             t.start();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +45,5 @@ public class WebServerApplication {
     public static void main(String[] args) {
         WebServerApplication application = new WebServerApplication();
         application.start();
-
-
     }
 }
