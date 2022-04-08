@@ -35,7 +35,7 @@ public class WebServerApplication {
             System.out.println("一个客户端连接了!");
             //启动一个线程处理该客户端交互
             ClientHandler handler = new ClientHandler(socket);
-            Thread t= new Thread(handler);
+            Thread t = new Thread(handler);
             t.start();
 
         } catch (IOException e) {
