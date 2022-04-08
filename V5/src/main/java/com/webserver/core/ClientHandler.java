@@ -25,7 +25,7 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             //1 解析请求
-            HttpServletRequest request = new HttpServletRequest(socket);
+            new HttpServletRequest(socket);
 
             //2 处理请求
 

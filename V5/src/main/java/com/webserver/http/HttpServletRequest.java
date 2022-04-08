@@ -62,8 +62,6 @@ public class HttpServletRequest {
             //将消息头按照"冒号空格"拆分为消息头的名字和值并以key,value存入header
             String[] data = line.split(":\\s");
             headers.put(data[0], data[1]);
-//                System.out.println("标题:"+data[0]);
-//                System.out.println("内容:"+data[1]);
         }
         System.out.println("headers:" + headers);
     }
