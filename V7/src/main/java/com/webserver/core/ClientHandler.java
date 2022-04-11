@@ -38,45 +38,37 @@ public class ClientHandler implements Runnable {
             File staticDir = new File(root, "static");
             File file = new File(staticDir, path);
             System.out.println("资源是否存在:" + file.exists());
-            if (file.exists()) {
 
-                //3 发送响应
-
-
-                //3.1发送状态行
-                println("HTTP/1.1 200 OK");
-                //3.2发送响应头
-                println("Content-Type: text/html");
-                //3.3发送响应正文(index.html页面的数据)
-                println("Content-Length: " + file.length());
-                OutputStream out = socket.getOutputStream();
-                //println("");
-                out.write(13);
-                out.write(10);
-                FileInputStream fis = new FileInputStream(file);
-                int len;
-                byte[] data = new byte[1024 * 10];
-                while ((len = fis.read(data)) != -1) {
-                    out.write(data, 0, len);
-                }
+            //3 发送响应
+            int s1;
+            String s2;
+            if (file.isFile()) {
+                s1 = 200;
+                s2 = "OK";
             } else {
+                s1 = 404;
+                s2 = "NotFound";
                 file = new File(staticDir, "root/404.html");
-                //3.1发送状态行
-                println("HTTP/1.1 404 NotFound");
-                //3.2发送响应头
-                println("Content-Type: text/html");
-                println("Content-Length: " + file.length());
-                OutputStream out = socket.getOutputStream();
-                //println("");
-                out.write(13);
-                out.write(10);
-                FileInputStream fis = new FileInputStream(file);
-                int len;
-                byte[] data = new byte[1024 * 10];
-                while ((len = fis.read(data)) != -1) {
-                    out.write(data, 0, len);
-                }
             }
+
+
+            //3.1发送状态行
+            println("HTTP/1.1 " + s1 + " " + s2);
+            //3.2发送响应头
+            println("Content-Type: text/html");
+            //3.3发送响应正文(index.html页面的数据)
+            println("Content-Length: " + file.length());
+            OutputStream out = socket.getOutputStream();
+            //println("");
+            out.write(13);
+            out.write(10);
+            FileInputStream fis = new FileInputStream(file);
+            int len;
+            byte[] data = new byte[1024 * 10];
+            while ((len = fis.read(data)) != -1) {
+                out.write(data, 0, len);
+            }
+
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         } finally {
