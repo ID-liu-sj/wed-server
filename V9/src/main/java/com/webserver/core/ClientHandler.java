@@ -1,6 +1,7 @@
 package com.webserver.core;
 
 import com.webserver.http.HttpServletRequest;
+import com.webserver.http.HttpServletResponse;
 
 import java.io.*;
 import java.net.Socket;
@@ -29,6 +30,7 @@ public class ClientHandler implements Runnable {
             //1 解析请求
             HttpServletRequest request = new HttpServletRequest(socket);
 
+            HttpServletResponse response = new HttpServletResponse(socket);
             //2 处理请求
             //通过请求对象,获取浏览器地址栏中的抽象路径部分
             String path = request.getUri();
@@ -38,35 +40,17 @@ public class ClientHandler implements Runnable {
             File staticDir = new File(root, "static");
             File file = new File(staticDir, path);
             System.out.println("资源是否存在:" + file.exists());
-
-            //3 发送响应
-            int s1;
-            String s2;
             if (file.isFile()) {
-                s1 = 200;
-                s2 = "OK";
-            } else {
-                s1 = 404;
-                s2 = "NotFound";
-                file = new File(staticDir, "root/404.html");
-            }
 
-            //3.1发送状态行
-            println("HTTP/1.1 " + s1 + " " + s2);
-            //3.2发送响应头
-            println("Content-Type: text/html");
-            //3.3发送响应正文(index.html页面的数据)
-            println("Content-Length: " + file.length());
-            OutputStream out = socket.getOutputStream();
-            //println("");
-            out.write(13);
-            out.write(10);
-            FileInputStream fis = new FileInputStream(file);
-            int len;
-            byte[] data = new byte[1024 * 10];
-            while ((len = fis.read(data)) != -1) {
-                out.write(data, 0, len);
+                response.setContentFile(file);
+
+            } else {
+                response.setS1(404);
+                response.setS2("NotFound");
+                response.setContentFile(new File(staticDir, "root/404.html"));
             }
+            //3 发送响应
+            response.response();
 
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
@@ -81,13 +65,6 @@ public class ClientHandler implements Runnable {
 
     }
 
-    private void println(String line) throws IOException {
-        OutputStream out = socket.getOutputStream();
-        byte[] data = line.getBytes(StandardCharsets.ISO_8859_1);
-        out.write(data);
-        out.write(13);
-        out.write(10);
-    }
 
 
 }
