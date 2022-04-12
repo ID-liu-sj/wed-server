@@ -20,7 +20,7 @@ public class DispatcherServlet {
     static {//对块代码解决异常用Ctrl+Alt+T
         try {
             root = new File(
-                    ClientHandler.class.getClassLoader().getResource(".").toURI()
+                    DispatcherServlet.class.getClassLoader().getResource(".").toURI()
             );
             staticDir = new File(root, "static");
         } catch (URISyntaxException e) {
