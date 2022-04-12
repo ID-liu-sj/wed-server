@@ -37,17 +37,13 @@ public class DispatcherServlet {
         File file = new File(staticDir, path);
         System.out.println("资源是否存在:" + file.exists());
         if (file.isFile()) {
-
             response.setContentFile(file);
-            response.addHeader("Content-Type", "text/html");
-            response.addHeader("Content-Length", file.length() + "");
-
         } else {//要么file表示的是一个目录,要么不存在
             response.setS1(404);
             response.setS2("NotFound");
-            response.setContentFile(new File(staticDir, "root/404.html"));
-            response.addHeader("Content-Type", "text/html");
-            response.addHeader("Content-Length", file.length() + "");
+            file = new File(staticDir, "root/404.html");
+            response.setContentFile(file);
+
         }
         //添加一个额外的响应头
         response.addHeader("Server", "WebServer");

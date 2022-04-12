@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -94,6 +95,20 @@ public class HttpServletResponse {
 
     public void setContentFile(File contentFile) {
         this.contentFile = contentFile;
+        String contentType = null;
+        try {
+            contentType = Files.probeContentType(contentFile.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*当我们无法根据正文文件确定类型是,则不发送Content-Type
+        在HTTP协议中档响应包含正文,但是不包含Content-Type时,则表示让浏览器
+        自行判断响应正文内容
+         */
+        if (contentType != null) {
+            addHeader("Content-Type", contentType);
+            addHeader("Content-Length", contentFile.length() + "");
+        }
     }
 
     /**
