@@ -19,9 +19,9 @@ public class HttpServletRequest {
     private String uri;//抽象路径
     private String protocol;//协议版本
     //消息头相关信息
-    private Map<String, String>  headers = new HashMap<>();
+    private Map<String, String> headers = new HashMap<>();
 
-    public HttpServletRequest(Socket socket) throws IOException {
+    public HttpServletRequest(Socket socket) throws IOException, EmptyRequestException {
         this.socket = socket;
 
         //1,1 解析请求行
@@ -38,8 +38,11 @@ public class HttpServletRequest {
     /**
      * 解析请求行
      */
-    private void parseRequestLine() throws IOException {
+    private void parseRequestLine() throws IOException, EmptyRequestException {
         String line = readLine();
+        if (line.isEmpty()) {//如果请求行为空字符串,则说明为空请求
+            throw new EmptyRequestException();
+        }
         System.out.println(line);
         //请求行相关信息
         String[] data = line.split("\\s");//正则表达式
@@ -106,7 +109,8 @@ public class HttpServletRequest {
     public String getProtocol() {
         return protocol;
     }
-    public String getHeader(String name){
+
+    public String getHeader(String name) {
         return headers.get(name);
     }
 
