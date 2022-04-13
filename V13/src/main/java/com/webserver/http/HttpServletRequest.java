@@ -110,6 +110,9 @@ public class HttpServletRequest {
         return protocol;
     }
 
+    /*
+        根据消息头的名字获取对应消息头的值
+     */
     public String getHeader(String name) {
         return headers.get(name);
     }
