@@ -43,7 +43,7 @@ public class DispatcherServlet {
         if ("/myweb/reg".equals(path)) {
             System.out.println("!!!!!!!!开始处理注册");
             UserController controller = new UserController();
-            controller.reg();
+            controller.reg(request,response);
 
 
         } else if ("/myweb/login".equals(path)) {
