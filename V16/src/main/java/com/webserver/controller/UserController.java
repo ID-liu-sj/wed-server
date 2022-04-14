@@ -1,5 +1,6 @@
 package com.webserver.controller;
 
+import com.sun.media.jfxmedia.events.NewFrameEvent;
 import com.webserver.core.DispatcherServlet;
 import com.webserver.entity.User;
 import com.webserver.http.HttpServletRequest;
@@ -89,6 +90,7 @@ public class UserController {
         ) {
             User user = new User(username, password, age, nickname);
             oos.writeObject(user);
+
             //注册成功了
             File file = new File(staticDir, "/myweb/reg_success.html");
             response.setContentFile(file);
@@ -101,5 +103,34 @@ public class UserController {
         //3 给用户响应一个注册结果页面(注册成功或注册失败)
 
 
+    }
+
+
+    public void login(HttpServletRequest request, HttpServletResponse response) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        File userFile = new File(useDir, username + ".obj");
+        if (userFile.exists()) {
+            try (FileInputStream fis = new FileInputStream(userFile);
+                 ObjectInputStream ois = new ObjectInputStream(fis);) {
+                User user = (User) ois.readObject();
+                File file;
+                if (user.getPassword().equals(password)) {
+                    file = new File(staticDir, "/myweb/login_success.html");
+                } else {
+                    file = new File(staticDir, "/myweb/login_fail.html");
+                }
+                response.setContentFile(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            File file = new File(staticDir, "/myweb/login_info_error.html");
+            response.setContentFile(file);
+        }
     }
 }

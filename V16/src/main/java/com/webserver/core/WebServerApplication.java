@@ -47,6 +47,7 @@ public class WebServerApplication {
     public static void main(String[] args) {
         WebServerApplication application = new WebServerApplication();
         application.start();
+
     }
 
 }

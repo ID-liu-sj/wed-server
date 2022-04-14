@@ -1,0 +1,22 @@
+遍历所有的键值对
+Map中每一组键值对有内部类Entry的实例表示
+Entry有两个常用方法:
+getKey,getValue.这两个方法用于获取当前
+Entry实例表示的这组键值对中的key与value
+
+Set<Entry> entrySet()
+将当前Map中每组键值对存入一个Set集合后返回
+
+ Set<Entry<String,Integer>> entrySet = map.entrySet();
+ for(Entry<String,Integer> e:entrySet){
+     String key = e.getKey();
+     Integer value = e.getValue();
+     System.out.println(key+":"+value);
+ }
+
+
+
+
+对象存在null情况 就不要调用方法 否则会出现空指针
+
+return
