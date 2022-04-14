@@ -1,6 +1,7 @@
 package com.webserver.core;
 
 import com.sun.deploy.security.SecureStaticVersioning;
+import com.webserver.controller.ArticleController;
 import com.webserver.controller.UserController;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
@@ -50,6 +51,9 @@ public class DispatcherServlet {
             System.out.println("!!!!!!!!!!!开始处理登录");
             UserController controller = new UserController();
             controller.login(request, response);
+        } else if ("/myweb/writeArticle".equals(path)) {
+            ArticleController controller = new ArticleController();
+            controller.writeArticle(request,response);
         } else {
             File file = new File(staticDir, path);
             System.out.println("资源是否存在:" + file.exists());
