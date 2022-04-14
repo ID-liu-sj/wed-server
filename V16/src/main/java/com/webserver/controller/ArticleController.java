@@ -37,13 +37,14 @@ public class ArticleController {
 
 
     public void writeArticle(HttpServletRequest request, HttpServletResponse response) {
+        //获取用户输入的标题与正文
         String title = request.getParameter("title");
         String content = request.getParameter("content");
 
-        if (title == (null) || content == (null)) {
+        if (title == (null) || content == (null)) {//于null比较不要用equals()就会kongzhizhen
             File file = new File(staticDir, "/myweb/article_fail.html");
             response.setContentFile(file);
-            return;
+            return;//用于跳出writeArticle()方法
         }
         File articleFile = new File(articlesDir, title + ".obj");
         try (
@@ -52,6 +53,8 @@ public class ArticleController {
         ) {
             Article article = new Article(title, content);
             oos.writeObject(article);
+
+            //发表成功后序列化
             File file = new File(staticDir, "/myweb/article_success.html");
             response.setContentFile(file);
         } catch (FileNotFoundException e) {

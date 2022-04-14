@@ -38,6 +38,7 @@ public class DispatcherServlet {
 
         //通过请求对象,获取浏览器地址栏中的抽象路径部分
         String path = request.getRequestURI();
+        System.out.println("====================>"+path);
         //首先判断该请求是否为请求一个业务,
         //因为分支结构所以不会同时发送正文内容
         //就会导致setContentFile()空指针
