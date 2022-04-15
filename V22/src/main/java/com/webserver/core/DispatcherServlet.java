@@ -2,6 +2,7 @@ package com.webserver.core;
 
 import com.sun.deploy.security.SecureStaticVersioning;
 import com.webserver.controller.ArticleController;
+import com.webserver.controller.ToolsController;
 import com.webserver.controller.UserController;
 import com.webserver.entity.Article;
 import com.webserver.http.HttpServletRequest;
@@ -61,6 +62,10 @@ public class DispatcherServlet {
         } else if ("/myweb/showAllArticle".equals(path)) {
             ArticleController controller = new ArticleController();
             controller.showAllArticle(request, response);
+        } else if ("/myweb/createQR".equals(path)) {
+            System.out.println("!!!!!!!!!!!!!!!开始生成二维码");
+            ToolsController controller = new ToolsController();
+            controller.createQr(request, response);
         } else {
             File file = new File(staticDir, path);
             System.out.println("资源是否存在:" + file.exists());
