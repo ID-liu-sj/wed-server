@@ -156,7 +156,7 @@ public class UserController {
             // }
         }
         //2使用程序生成一个页面,同时遍历List集合将用户信息拼接到表格中
-        try (PrintWriter p = new PrintWriter("./userList.html");){
+        try (PrintWriter p = new PrintWriter("./userList.html");) {
             p.println("<!DOCTYPE html>");
             p.println("<html lang=\"en\">");
             p.println("<head>");
@@ -175,24 +175,17 @@ public class UserController {
             p.println("</tr>");
             for (User user : userList) {
                 p.println("<tr>");
-                p.println("<td>"+user.getUsername()+"</td>");
-                p.println("<td>"+user.getPassword()+"</td>");
-                p.println("<td>"+user.getNickname()+"</td>");
-                p.println("<td>"+user.getAge()+"</td>");
+                p.println("<td>" + user.getUsername() + "</td>");
+                p.println("<td>" + user.getPassword() + "</td>");
+                p.println("<td>" + user.getNickname() + "</td>");
+                p.println("<td>" + user.getAge() + "</td>");
                 p.println("</tr>");
             }
             p.println("</table>");
             p.println("</center>");
             p.println("</body>");
             p.println("</html>");
-
             System.out.println("生成页面完毕!");
-
-
-
-
-
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
