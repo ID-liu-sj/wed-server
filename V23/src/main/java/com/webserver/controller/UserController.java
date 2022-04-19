@@ -1,6 +1,8 @@
 package com.webserver.controller;
 
 import com.sun.media.jfxmedia.events.NewFrameEvent;
+import com.webserver.annotation.Controller;
+import com.webserver.annotation.RequestMapping;
 import com.webserver.core.DispatcherServlet;
 import com.webserver.entity.User;
 import com.webserver.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import java.util.List;
 /**
  * 处理与用户相关的业务操作
  */
+@Controller
 public class UserController {
     private static File useDir;
 
@@ -44,6 +47,7 @@ public class UserController {
         }
     }
 
+    @RequestMapping("/myweb/reg")
     public void reg(HttpServletRequest request, HttpServletResponse response) {
 
         //1 获取用户注册页面上输入的注册信息，获取form表单提交的内容
@@ -108,7 +112,7 @@ public class UserController {
 
     }
 
-
+    @RequestMapping("/myweb/login")
     public void login(HttpServletRequest request, HttpServletResponse response) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -137,6 +141,7 @@ public class UserController {
         }
     }
 
+    @RequestMapping("/myweb/showAllUser")
     public void showAllUser(HttpServletRequest request, HttpServletResponse response) {
         //1 先用users目录里将所有用户读取出来存入一个List集合备用
         List<User> userList = new ArrayList<>();

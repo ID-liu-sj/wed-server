@@ -1,5 +1,7 @@
 package com.webserver.controller;
 
+import com.webserver.annotation.Controller;
+import com.webserver.annotation.RequestMapping;
 import com.webserver.core.DispatcherServlet;
 import com.webserver.entity.Article;
 import com.webserver.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Controller
 public class ArticleController {
     private static File articlesDir;
 
@@ -37,7 +40,7 @@ public class ArticleController {
         }
     }
 
-
+    @RequestMapping("/myweb/writeArticle")
     public void writeArticle(HttpServletRequest request, HttpServletResponse response) {
         //获取用户输入的标题与正文
         String title = request.getParameter("title");
@@ -67,6 +70,7 @@ public class ArticleController {
         }
     }
 
+    @RequestMapping("/myweb/showAllArticle")
     public void showAllArticle(HttpServletRequest request, HttpServletResponse response) {
         List<Article> articleList = new ArrayList<>();
         File[] subs = articlesDir.listFiles(f -> f.getName().endsWith(".obj"));

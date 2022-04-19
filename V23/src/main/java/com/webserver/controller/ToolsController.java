@@ -1,17 +1,23 @@
 package com.webserver.controller;
 
+import com.webserver.annotation.Controller;
+import com.webserver.annotation.RequestMapping;
+import com.webserver.core.DispatcherServlet;
 import com.webserver.http.HttpServletRequest;
 import com.webserver.http.HttpServletResponse;
 import qrcode.QRCodeUtil;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URISyntaxException;
 
+@Controller
 public class ToolsController {
-
+    @RequestMapping("/myweb/createQR")
     public void createQr(HttpServletRequest request, HttpServletResponse response) {
         String content = request.getParameter("content");
         try {
-            QRCodeUtil.encode(content,"logo.jpg",response.getOutputStream(),true);
+            QRCodeUtil.encode(content, "logo.jpg", response.getOutputStream(), true);
             response.setContentType("image/jpeg");
 
         } catch (Exception e) {
@@ -20,14 +26,15 @@ public class ToolsController {
     }
 
 
+    public static void main(String[] args) throws URISyntaxException {
+
+        File fileDir = new File(DispatcherServlet.class.getClassLoader().getResource("./com/webserver/controller").toURI());
+
+        System.out.println(fileDir);
 
 
 
-
-
-
-    public static void main(String[] args) {
-        String message = "http://www.bilibili.com";
+        /*String message = "http://www.bilibili.com";
         try {
             //参数1:二维码上包含的文本信息  参数2:图片生成的位置
 //            QRCodeUtil.encode(message,"./qr.jpg");
@@ -40,6 +47,6 @@ public class ToolsController {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
