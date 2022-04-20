@@ -22,21 +22,11 @@ public class UserController {
     /*
       因为全局固定 所以定义成静态
        */
-    private static File root;
-    private static File staticDir;
 
     /*
     静态变量需要在静态块里初始化
      */
-    static {//对块代码解决异常用Ctrl+Alt+T
-        try {
-            root = new File(
-                    DispatcherServlet.class.getClassLoader().getResource(".").toURI()
-            );
-            staticDir = new File(root, "static");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+    static {
         userDir = new File("./users");
         if (!userDir.exists()) {
             userDir.mkdirs();
@@ -56,27 +46,11 @@ public class UserController {
         String ageStr = request.getParameter("age");
 
         if (username == (null) || password == (null) || nickname == (null) || ageStr == (null) || !ageStr.matches("[0-9]+")) {
-            File file = new File(staticDir, "/myweb/reg_input_error.html");
-            response.setContentFile(file);
+//            File file = new File(staticDir, "/myweb/reg_input_error.html");
+//            response.setContentFile(file);
+            response.sendRedirect("/myweb/reg_input_error.html");
             return;
         }
-       /* switch (1) {
-            case 1:
-                username.equals(null);
-                response.setContentFile(file1);
-            case 2:
-                password.equals(null);
-                response.setContentFile(file1);
-            case 3:
-                nickname.equals(null);
-                response.setContentFile(file1);
-            case 4:
-                ageStr.equals(null) || !ageStr.matches("[0-9]+");
-            case 5:
-
-                response.setContentFile(file1);
-
-        }*/
 
         int age = Integer.parseInt(ageStr);
         System.out.println(username + "/" + password + "/" + nickname + "/" + ageStr);
@@ -84,8 +58,9 @@ public class UserController {
         //2 将用户信息保存
         File userFile = new File(userDir, username + ".obj");
         if (userFile.exists()) {
-            File file = new File(staticDir, "/myweb/have_user.html");
-            response.setContentFile(file);
+//            File file = new File(staticDir, "/myweb/have_user.html");
+//            response.setContentFile(file);
+            response.sendRedirect("/myweb/have_user.html");
             return;
         }
         try (FileOutputStream fos = new FileOutputStream(userFile);
@@ -95,8 +70,9 @@ public class UserController {
             oos.writeObject(user);
 
             //注册成功了
-            File file = new File(staticDir, "/myweb/reg_success.html");
-            response.setContentFile(file);
+//            File file = new File(staticDir, "/myweb/reg_success.html");
+//            response.setContentFile(file);
+            response.sendRedirect("/myweb/reg_success.html");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -119,11 +95,13 @@ public class UserController {
                 User user = (User) ois.readObject();
                 File file;
                 if (user.getPassword().equals(password)) {
-                    file = new File(staticDir, "/myweb/login_success.html");
+//                    file = new File(staticDir, "/myweb/login_success.html");
+                    response.sendRedirect("/myweb/login_success.html");
                 } else {
-                    file = new File(staticDir, "/myweb/login_fail.html");
+//                    file = new File(staticDir, "/myweb/login_fail.html");
+                    response.sendRedirect("/myweb/login_fail.html");
                 }
-                response.setContentFile(file);
+//                response.setContentFile(file);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -132,8 +110,9 @@ public class UserController {
                 e.printStackTrace();
             }
         } else {
-            File file = new File(staticDir, "/myweb/login_info_error.html");
-            response.setContentFile(file);
+//            File file = new File(staticDir, "/myweb/login_info_error.html");
+//            response.setContentFile(file);
+            response.sendRedirect("/myweb/login_info_error.html");
         }
     }
 
@@ -199,8 +178,9 @@ public class UserController {
         String userName = request.getParameter("username");
         File userFile = new File(userDir, userName + ".obj");
         userFile.delete();
-        File file = new File(staticDir, "/myweb/deleteUserSuccess.html");
-        response.setContentFile(file);
+//        File file = new File(staticDir, "/myweb/deleteUserSuccess.html");
+//        response.setContentFile(file);
+        response.sendRedirect("/myweb/showAllUser");
     }
 
 
